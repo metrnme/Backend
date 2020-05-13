@@ -27,9 +27,11 @@ class CommentApi(Resource):
             counter += 1
         return {'status': 200, 'content': data}
 
-    def delete(self, id):
-        data = request.headers.get("body")
-        print(data)
+    def delete(self):
+        data = request.get_json(force=True)
+        result = Comments.objects.get(id=data['id'])
+        result.delete()
+        return {"result": "success"}
 
     def update(self, id):
         data = request.headers.get("body")

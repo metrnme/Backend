@@ -1,17 +1,13 @@
 from flask import Flask, request, Response, render_template, jsonify
-from database.models import Users, Comments
-from mongoengine import connect
 from flask_restful import Api
+from database.db import connect_db
 from routes import initialize_routes
 import json
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
 
-client = connect(
-    host='mongodb+srv://test:test1@mtrnme-yr9b5.mongodb.net/mtrnme?retryWrites=true&w=majority')
-
-db = client.db
+db = connect_db()
 app = Flask(__name__)
 api = Api(app)
 initialize_routes(api)

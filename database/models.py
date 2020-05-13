@@ -20,6 +20,7 @@ class Comments(Document):
     content = StringField(max_length=120)
     timestamp = DateTimeField(default=datetime.datetime.now)
     vote = IntField(default=0)
+
     objects = QuerySetManager()
     meta = {'queryset_class': CommentsQuerySet}
 
@@ -31,9 +32,10 @@ Instrument_type = (('PER', 'Percussions'),
                    ('HRN', 'Horns'))
 
 
-class Instrument(EmbeddedDocument):
+class Instruments(Document):
     name = StringField(required=True, unique=True)
-    i_type = StringField(max_length=3, choices=Instrument_type)
+    i_type = StringField(max_length=3, required=True, choices=Instrument_type)
+    objects = QuerySetManager()
 
 
 class Users(Document):
@@ -42,28 +44,35 @@ class Users(Document):
     age = IntField()
     gender = StringField(max_length=1, choices=Users_type)
     timestamp = DateTimeField(default=datetime.datetime.now)
-    followers = ListField(StringField(max_length=30, unique=True))
-    following = ListField(StringField(max_length=30, unique=True))
-    objects = QuerySetManager()
+    followers = ListField(StringField(max_length=30))
+    following = ListField(StringField(max_length=30))
     isMusician = BooleanField(default=False)
-    inst = ListField(EmbeddedDocumentField(Instrument))
-    genres = ListField(EmbeddedDocumentField(Genre))
+    inst = ListField(StringField(unique=True))
+    #genres = ListField(EmbeddedDocumentField(Genre))
+    objects = QuerySetManager()
+
+
+class Counter(Document):
+    collection = StringField(unique=True)
+    counter = IntField(default=0)
+    objects = QuerySetManager()
 
 
 class Track(Document):
+    track_id = IntField(unique=True)
     name = StringField()
-    url = URLField(url_regex=None)
-    author = StringField(required=True)
+    url = StringField(unique=True)
+    username = StringField(required=True)
     #comments = ListField(EmbeddedDocumentField(Comments))
     likes = IntField(default=0)
     objects = QuerySetManager()
-    inst_used = ListField(EmbeddedDocumentField(Instrument))
-    inst_void = ListField(EmbeddedDocumentField(Instrument))
+    #inst_used = ListField(EmbeddedDocumentField(Instruments))
+    #inst_void = ListField(EmbeddedDocumentField(Instruments))
 
 
 class Playlist(Document):
-
+    p_username = StringField(required=True)
     name = StringField(required=True)
     timestamp = DateTimeField(default=datetime.datetime.now)
     p_type = StringField(default="User")
-    track_list = ListField(Track.author)
+    track_list = ListField(StringField(unique=True, max_length=150))
