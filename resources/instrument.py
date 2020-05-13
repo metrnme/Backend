@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 
 class InstrumentUserApi(Resource):
-    def post(self):
+    def put(self):
         try:
             data = request.get_json(force=True)
             user = data["username"]

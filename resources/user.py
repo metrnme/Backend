@@ -2,10 +2,9 @@ from flask import Response, request, jsonify
 from database.models import Users
 from database.db import connect_db
 from flask_restful import Resource
-from flask_jwt_extended import JWTManager
 
 
-class UsersApi(Resource):  # for USERS
+class AllUsersApi(Resource):  # for USERS
     def get(self):
         data = dict()
         counter = 0
@@ -15,29 +14,20 @@ class UsersApi(Resource):  # for USERS
         return {'status': 200, 'content': data}
 
 
-class UserApi(Resource):  # for USER
-    def post(self):
-        # try:
-        # username = request.args.get('username')
-        # name = request.args.get('name')
-        # gender = request.args.get('gender')
-        # age = request.args.get('age')
-        #   print(username, name, gender, age)
-        # Create a link-based post
-        # post = Users(username=username, name=name, gender=gender, age=age)
-        # post.save()
-        # return {'status': 201, 'message': 'User has been sucessfully created!'}
-
+class UserDataApi(Resource):  # for USER
+    def put(self):
         try:
             data = request.get_json(force=True)
-            post = Users(username=data['username'], name=data['name'],
-                         age=data['age'], gender=data['gender'])
-            post.save()
-            return {'status': 201, 'message': 'user has been sucessfully posted!'}
+            u=Users.objects.get(username=data['username'])
+            u.name=data['name']
+            u.age=data['age']
+            u.gender=data['gender']
+            u.save()
+            return {'status': 201, 'message': 'User Information has been sucessfully updated!'}
 
         except Exception as e:
             print(e)
-            return {'status': 409, 'error_message': 'Username already exists!, please try coming up with a different username!'}
+            return {'status': 409, 'error_message': e}
 
     def delete(self):
         try:
@@ -64,7 +54,7 @@ class UserApi(Resource):  # for USER
             return resp
 
 
-class NewUserApi(Resource):  # for USER
+class CreateUserApi(Resource):  # for USER
     def post(self):
         try:
             data = request.get_json(force=True)
@@ -74,16 +64,17 @@ class NewUserApi(Resource):  # for USER
 
         except Exception as e:
             print(e)
-            return {'status': 409, 'error_message': 'Username already exists!, please try coming up with a different username!'}
+            return {'status': 409, 'message': 'Username already exists!, please try coming up with a different username!'}
+
 
 
 class FollowApi(Resource):
-    def post(self):
+    def put(self):
         try:
             data = request.get_json(force=True)
             to_u = Users.objects.get(username=data["to"])
             from_me = Users.objects.get(username=data["from"])
-            message = "Failed to follow "+data["to"]+"by"+data["from"]
+            message = data["from"]+" is already following "+data["to"]
 
             if(len(to_u.followers) == 0) and (len(from_me.following) == 0):
                 message = self.addFollower(
@@ -95,7 +86,7 @@ class FollowApi(Resource):
                 from_me.following.append(data["to"])
                 from_me.save()
                 to_u.save()
-                message = "case 2 success"
+                message = data["from"]+" started following "+data["to"]
             elif(len(to_u.followers) == 0 and len(from_me.following) > 0):
                 for users in from_me.following:
                     if users != data["to"]:
@@ -103,17 +94,18 @@ class FollowApi(Resource):
                 to_u.followers.append(data["from"])
                 from_me.save()
                 to_u.save()
-                message = "case 3 sucess"
+                message = data["from"]+" started following "+data["to"]
             else:
                 for users in to_u.followers:
                     if(users != data["from"]):
-                        to_u.following.append(data["from"])
+                        to_u.followers.append(data["from"])
                         to_u.save()
                 for users in from_me.following:
                     if(users != data["to"]):
-                        from_me.followers.append(data["to"])
+                        from_me.following.append(data["to"])
                         from_me.save()
-
+                message = data["from"]+" started following "+data["to"]
+                
             return {"status": 200, "message": message}
         except Exception as e:
             print(e)
