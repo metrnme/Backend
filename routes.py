@@ -1,4 +1,4 @@
-from resources.user import UserDataApi, AllUsersApi, CreateUserApi, FollowApi
+from resources.user import UserDataApi, AllUsersApi, CreateUserApi, FollowApi, UsertypeApi
 from resources.comment import CommentApi
 from resources.instrument import InstrumentApi, InstrumentUserApi
 from resources.playlist import PlaylistApi
@@ -8,6 +8,7 @@ from resources.track import TrackApi
 
 def initialize_routes(api):
     api.add_resource(AllUsersApi, '/api/v1/users')
+    api.add_resource(UsertypeApi, '/api/v1/usertype')
     api.add_resource(UserDataApi, '/api/v1/user')
     api.add_resource(CreateUserApi, '/api/v1/n_user')
     api.add_resource(FollowApi, '/api/v1/follow')

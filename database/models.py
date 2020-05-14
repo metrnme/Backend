@@ -2,7 +2,8 @@ from mongoengine import *
 import datetime
 
 Users_type = (('m', 'Male'),
-              ('f', 'Female'))
+              ('f', 'Female'),
+              (' ', 'Undefined'))
 
 
 class Genre(EmbeddedDocument):
@@ -40,9 +41,9 @@ class Instruments(Document):
 
 class Users(Document):
     username = StringField(required=True, unique=True)
-    name = StringField(max_length=30)
-    age = IntField()
-    gender = StringField(max_length=1, choices=Users_type)
+    name = StringField(max_length=30, default="")
+    age = IntField(default=0)
+    gender = StringField(max_length=1, choices=Users_type, default=" ")
     timestamp = DateTimeField(default=datetime.datetime.now)
     followers = ListField(StringField(max_length=30))
     following = ListField(StringField(max_length=30))
