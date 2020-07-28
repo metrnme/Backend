@@ -63,11 +63,12 @@ class Track(Document):
     name = StringField()
     url = StringField(unique=True)
     username = StringField(required=True)
-    #comments = ListField(EmbeddedDocumentField(Comments))
     likes = IntField(default=0)
     objects = QuerySetManager()
     #inst_used = ListField(EmbeddedDocumentField(Instruments))
     #inst_void = ListField(EmbeddedDocumentField(Instruments))
+    #comments = ListField(EmbeddedDocumentField(Comments))
+    
 
 
 class Playlist(Document):

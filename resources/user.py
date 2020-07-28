@@ -64,7 +64,7 @@ class CreateUserApi(Resource):  # for USER
 
         except Exception as e:
             print(e)
-            return {'status': 409, 'message': 'Username already exists!, please try coming up with a different username!'}
+            return {'status': 300, 'message': 'Username already exists!, please try coming up with a different username!'}
 
 
 
@@ -116,4 +116,4 @@ class FollowApi(Resource):
         from_me.following.append(a)
         to_u.save()
         from_me.save()
-        return "Successfully followed" + b+" by "+a
+        return "Successfully followed " + b+" by "+a

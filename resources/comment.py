@@ -33,6 +33,8 @@ class CommentApi(Resource):
         result.delete()
         return {"result": "success"}
 
-    def update(self, id):
-        data = request.headers.get("body")
+    def put(self, id):
+        data = request.get_json(force=True)
+        result = Comments.objects.get(id=data['track_id'])
+        result.content=data['message']
         print(data)
