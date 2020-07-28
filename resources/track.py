@@ -11,7 +11,7 @@ class TrackApi(Resource):
             data = []
             for track in Track.objects:
                 t = {"track_id": track.track_id,  "name": track.name,
-                     "username": track.username, "url": track.url, "likes": track.likes}
+                     "username": track.username, "url": track.url, "image_url": track.image_url, "genre": track.genre, "inst_used": track.inst_used, "likes": track.likes}
                 data.append(t)
                 json_data = json.dumps(data, indent=2)
 
@@ -30,7 +30,7 @@ class TrackApi(Resource):
             cnt.counter += 1
             cnt.save()
             post = Track(track_id=cnt.counter, name=data['name'],
-                         url=data['url'], username=data['username'])
+                         url=data['url'], username=data['username'], image_url=data['image_url'], inst_used=data['inst_used'], genre=data['genre'])
             post.save()
             return {'status': 201, 'message': 'Track has been sucessfully added!'}
 

@@ -2,12 +2,32 @@ from flask import Response, request, jsonify
 from database.models import Users
 from database.db import connect_db
 from flask_restful import Resource
+import json
 
 
 class AllUsersApi(Resource):  # for USERS
     def get(self):
+        try:
+            data = []
+            for user in Users.objects:
+                # Add all of this like this below i'll brb
+                u = {"username": user.username,  "name": user.name,
+                     "age": user.age, "gender": user.gender,  "followers": user.followers,
+                     "following": user.following, "isMusician": user.isMusician, "inst": user.inst}
+                data.append(u)
+                json_data = json.dumps(data, indent=2)
+
+            resp = Response(json_data, status=200,
+                            mimetype='application/json')
+            return resp
+
+        except Exception as e:
+            print(e)
+            return {'status': 409, 'error_message': 'Failed!'}
+
         data = dict()
         counter = 0
+        Users.objects
         for user in Users.objects:
             data.setdefault(counter, user.to_json())
             counter += 1

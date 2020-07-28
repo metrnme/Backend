@@ -4,6 +4,7 @@ from resources.instrument import InstrumentApi, InstrumentUserApi
 from resources.playlist import PlaylistApi
 from resources.counter import CounterApi
 from resources.track import TrackApi
+from resources.genre import GenreApi
 
 
 def initialize_routes(api):
@@ -18,5 +19,6 @@ def initialize_routes(api):
     api.add_resource(TrackApi, '/api/v1/user/trk')
     api.add_resource(CounterApi, '/api/v1/counter')
     api.add_resource(PlaylistApi, '/api/v1/play')
+    api.add_resource(GenreApi, '/api/v1/genre')
 #    api.add_resource(SignupApi, '/api/auth/signup')
 #    api.add_resource(LoginApi, '/api/auth/login')
