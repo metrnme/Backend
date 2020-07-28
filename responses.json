@@ -1,7 +1,0 @@
-{
-  "content": {
-    "1": "{\"_id\": {\"$oid\": \"5eb20f672b233bd859b0ce4a\"}, \"username\": \"aceasad\", \"name\": \"Asad Saeed\", \"age\": 28, \"gender\": \"m\", \"timestamp\": {\"$date\": 1588750508729}, \"followers\": []}",
-    "2": "{\"_id\": {\"$oid\": \"5eb2105c0fb8754f3132c618\"}, \"username\": \"bilizie\", \"name\": \"Bilal\", \"age\": 26, \"gender\": \"m\", \"timestamp\": {\"$date\": 1588750508730}, \"followers\": []}"
-  },
-  "status": 200
-}
