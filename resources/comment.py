@@ -2,6 +2,7 @@ from flask import Response, request, jsonify
 from database.models import Comments, Track
 from flask_restful import Resource
 from datetime import datetime as dt
+import json
 
 
 class CommentApi(Resource):
@@ -18,14 +19,24 @@ class CommentApi(Resource):
             return {'status': 409, 'error_message': 'Failed to post a comment!'}
 
     def get(self):
-        data = request.get_json(force=True)
-        result = Comments.objects.getAllComments(data['track_id'])
-        data = dict()
-        counter = 0
-        for comments in result:
-            data.setdefault(counter, comments.to_json())
-            counter += 1
-        return {'status': 200, 'content': data}
+        try:
+            data = request.get_json(force=True)
+            result = Comments.objects.getAllComments(data['track_id'])
+            resp = Response(result.to_json(), status=200,
+                            mimetype='application/json')
+            return resp
+        except Exception as e:
+            print(e)
+            return {'status': 409, 'error_message': 'Failed!'}
+
+        # data = request.get_json(force=True)
+        # result = Comments.objects.getAllComments(data['track_id'])
+        # data = dict()
+        # counter = 0
+        # for comments in result:
+        #    data.setdefault(counter, comments.to_json())
+     #   counter += 1
+        # return {'status': 200, 'content': data}
 
     def delete(self):
         data = request.get_json(force=True)
