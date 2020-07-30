@@ -1,5 +1,5 @@
 from flask import Response, request, jsonify
-from database.models import Playlist, Counter
+from database.models import Playlist, Counter, Track
 from flask_restful import Resource
 import json
 
@@ -15,13 +15,30 @@ class PlaylistPostApi(Resource):
             print(e)
             return {'status': 409, 'error_message': 'Failed!'}
 
-
+class PlaylistTrackApi(Resource):
+    def post(self):
+        try:
+            data = []
+            playlist_tracks = request.get_json(force=True)
+            for track in Track.objects:
+                if( track.track_id in playlist_tracks):
+                    t = {"track_id": track.track_id,  "name": track.name,
+                     "username": track.username, "url": track.url, "image_url": track.image_url, "genre": track.genre, "inst_used": track.inst_used, "likes": track.likes}
+                    data.append(t)
+            json_data = json.dumps(data, indent=2)
+            resp = Response(json_data, status=200,
+                            mimetype='application/json')
+            return resp
+        except Exception as e:
+            print(e,"Exception")
+            return {'status': 409, 'error_message': 'Failed!'}
+        
 class PlaylistApi(Resource):
     def post(self):
         try:
             data = request.get_json(force=True)
             cnt = Counter.objects.get(collection="playlist")
-            cnt.counter += 2
+            cnt.counter += 1
             cnt.save()
             post = Playlist(pl_id=cnt.counter, name=data['name'], username=data['username'])
             post.save()
