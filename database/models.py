@@ -65,14 +65,20 @@ class Track(Document):
     inst_used = ListField(StringField(max_length=30))
     genre = ListField(StringField(max_length=30))
 
+class PlaylistQuerySet(QuerySet):
+    def getAllPlaylist(self, id):
+        return self.filter(username=id)
+
 
 class Playlist(Document):
-    p_username = StringField(required=True)
+    pl_id = IntField(unique=True)
+    username = StringField(required=True)
     name = StringField(required=True)
     timestamp = DateTimeField(default=datetime.datetime.now)
     p_type = StringField(default="User")
-    track_list = ListField(IntField(unique=True))
+    track_list = ListField(IntField())
     objects = QuerySetManager()
+    meta = {'queryset_class': PlaylistQuerySet}
 
 
 class Genre(Document):
