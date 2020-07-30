@@ -3,6 +3,18 @@ from database.models import Playlist, Counter
 from flask_restful import Resource
 import json
 
+class PlaylistPostApi(Resource):
+    def post(self):
+        try:
+            data = request.get_json(force=True)
+            result=Playlist.objects.getAllPlaylist(data['username'])
+            resp = Response(result.to_json(), status=200,
+                            mimetype='application/json')
+            return resp
+        except Exception as e:
+            print(e)
+            return {'status': 409, 'error_message': 'Failed!'}
+
 
 class PlaylistApi(Resource):
     def post(self):
@@ -21,8 +33,8 @@ class PlaylistApi(Resource):
 
     def get(self):
         try:
-            data = request.get_json(force=True)
-            result=Playlist.objects.getAllPlaylist(data['username'])
+            username = request.args.get('username')
+            result=Playlist.objects.getAllPlaylist(username)
             resp = Response(result.to_json(), status=200,
                             mimetype='application/json')
             return resp
@@ -37,6 +49,7 @@ class PlaylistApi(Resource):
         u.save()
         json_data = {'status': 201, 'message': 'Track has been sucessfully added to Playlist'}
         return json_data
+    
     def delete(self):
         data = request.get_json(force=True)
         u = Playlist.objects.get(pl_id=data['playlist_id'])
