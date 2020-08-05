@@ -12,7 +12,8 @@ class InstrumentUserApi(Resource):
             user = data["username"]
             inst = data["instruments"]
             dataToupdate = Users.objects.get(username=user)
-            dataToupdate.inst = inst
+            for instrumento in inst:
+                dataToupdate.inst.append(instrumento)
             dataToupdate.save()
             return {"status": 200, "message": "Instrument has been added to the User!"}
         except Exception as e:
