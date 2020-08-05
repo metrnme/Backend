@@ -348,7 +348,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\":\"HawaamiTrack\",\n\t\"url\":\"uweytrwerwuetrywter\",\n\t\"username\":\"aceasad\"\n}\n\n"
+					"raw": "{\n\t\"name\":\"HawaamiTrack\",\n\t\"url\":\"uweytrwerwuetrywter\",\n\t\"username\":\"aceasad\",\n\t\"image_url\":\"image-key\",\n\t\"inst_used\":[\"Guitar\",\"Apple\"],\n\t\"genre\":[\"Rock\",\"Roll\"]\n}\n\n"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:5000/api/v1/user/trk",
@@ -446,11 +446,8 @@
 		},
 		{
 			"name": "Get all Comments for a Track",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -460,10 +457,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"track_id\":2\n}"
+					"raw": "{\n\t\"track_id\":22\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/api/v1/comment",
+					"raw": "http://127.0.0.1:5000/api/v1/t_comment",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -475,7 +472,7 @@
 					"path": [
 						"api",
 						"v1",
-						"comment"
+						"t_comment"
 					]
 				}
 			},
@@ -585,7 +582,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\":\"some playlist\",\n\t\"p_username\":\"bilizie\"\n}"
+					"raw": "{\n\t\"name\":\"Rock and Roll\",\n\t\"username\":\"aceasad\"\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:5000/api/v1/play",
@@ -612,19 +609,30 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"playlist_id\":17,\r\n    \"track_id\":5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete a Playlist",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": ""
+					"raw": "http://127.0.0.1:5000/api/v1/play",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"play"
+					]
 				}
 			},
 			"response": []
@@ -642,7 +650,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"collection\":\"instruments\"\n}"
+					"raw": "{\n\t\"collection\":\"playlist\"\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:5000/api/v1/counter",
@@ -666,16 +674,144 @@
 		{
 			"name": "Get All Playlists",
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"username\":\"aceasad\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": ""
+					"raw": "http://127.0.0.1:5000/api/v1/play_p",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"play_p"
+					]
 				}
 			},
 			"response": []
 		},
 		{
 			"name": "Add track to Playlist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"playlist_id\":19,\r\n    \"track_id\":19\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/v1/play",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"play"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a playlist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"playlist_id\":17\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/v1/play",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"play"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Tracks of a Playlist",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    19\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/v1/play_t",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"play_t"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Tracks",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -686,7 +822,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete a playlist",
+			"name": "Get all Tracks for a User",
 			"request": {
 				"method": "GET",
 				"header": [],
