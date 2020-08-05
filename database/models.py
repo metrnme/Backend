@@ -55,6 +55,9 @@ class Counter(Document):
     counter = IntField(default=0)
     objects = QuerySetManager()
 
+class TrackUserQuerySet(QuerySet):
+    def getAllUserTracks(self, id):
+        return self.filter(username=id)
 
 class Track(Document):
     track_id = IntField(unique=True)
@@ -66,6 +69,8 @@ class Track(Document):
     objects = QuerySetManager()
     inst_used = ListField(StringField(max_length=30))
     genre = ListField(StringField(max_length=30))
+    objects = QuerySetManager()
+    meta = {'queryset_class': TrackUserQuerySet}
 
 class PlaylistQuerySet(QuerySet):
     def getAllPlaylist(self, id):
