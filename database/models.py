@@ -39,6 +39,8 @@ class Users(Document):
     username = StringField(required=True, unique=True)
     name = StringField(max_length=30, default="")
     age = IntField(default=0)
+    bio = StringField(max_length=128)
+    imgUrl = StringField()
     gender = StringField(max_length=1, choices=Users_type, default=" ")
     timestamp = DateTimeField(default=datetime.datetime.now)
     followers = ListField(StringField(max_length=30))
