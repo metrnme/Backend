@@ -4,6 +4,18 @@ from flask_restful import Resource
 from database.db import connect_db
 import json
 
+class TrackUserApi(Resource):
+    def post(self):
+        try:
+            data = request.get_json(force=True)
+            usertracks = Track.objects.getAllUserTracks(data['username'])
+            resp = Response(usertracks.to_json(), status=200,
+                            mimetype='application/json')
+            return resp
+
+        except Exception as e:
+            print(e)
+            return {'status': 409, 'error_message': 'Failed!'}
 
 class TrackApi(Resource):
     def get(self):
