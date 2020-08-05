@@ -12,8 +12,8 @@ class AllUsersApi(Resource):  # for USERS
             for user in Users.objects:
                 # Add all of this like this below i'll brb
                 u = {"username": user.username,  "name": user.name,
-                     "age": user.age, "gender": user.gender,  "followers": user.followers,
-                     "following": user.following, "isMusician": user.isMusician, "inst": user.inst}
+                     "age": user.age,"imgUrl":user.imgUrl, "gender": user.gender,  "followers": user.followers,
+                     "following": user.following, "isMusician": user.isMusician,"bio":user.bio, "inst": user.inst}
                 data.append(u)
                 json_data = json.dumps(data, indent=2)
 
@@ -42,6 +42,8 @@ class UserDataApi(Resource):  # for USER
             u.name = data['name']
             u.age = data['age']
             u.gender = data['gender']
+            u.bio = data['bio']
+            u.imgUrl = data['imgUrl']
             u.save()
             json_data = {
                 'status': 201, 'message': 'User Information has been sucessfully updated!'}
@@ -79,7 +81,6 @@ class UserDataApi(Resource):  # for USER
                 {'status': 404, 'error_message': 'The User Searched does not exist!'})
             return resp
 
-# heehehehehehe
 
 
 class CreateUserApi(Resource):  # for USER

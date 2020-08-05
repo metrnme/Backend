@@ -1,5 +1,5 @@
 from resources.user import UserDataApi, AllUsersApi, CreateUserApi, FollowApi, UsertypeApi
-from resources.comment import CommentApi
+from resources.comment import CommentApi,CommentFetchApi
 from resources.instrument import InstrumentApi, InstrumentUserApi
 from resources.playlist import PlaylistApi, PlaylistPostApi, PlaylistTrackApi
 from resources.counter import CounterApi
@@ -13,6 +13,7 @@ def initialize_routes(api):
     api.add_resource(CreateUserApi, '/api/v1/n_user')
     api.add_resource(FollowApi, '/api/v1/follow')
     api.add_resource(CommentApi, '/api/v1/comment')
+    api.add_resource(CommentFetchApi, '/api/v1/t_comment')
     api.add_resource(InstrumentApi, '/api/v1/inst')
     api.add_resource(InstrumentUserApi, '/api/v1/user/inst')
     api.add_resource(TrackApi, '/api/v1/user/trk')
