@@ -1,10 +1,11 @@
 from resources.user import UserDataApi, AllUsersApi, CreateUserApi, FollowApi, UsertypeApi
-from resources.comment import CommentApi,CommentFetchApi
+from resources.comment import CommentApi, CommentFetchApi
 from resources.instrument import InstrumentApi, InstrumentUserApi
 from resources.playlist import PlaylistApi, PlaylistPostApi, PlaylistTrackApi
 from resources.counter import CounterApi
-from resources.track import TrackApi,TrackUserApi
+from resources.track import TrackApi, TrackUserApi, TrackLikeApi, TrackUnLikeApi
 from resources.genre import GenreApi
+
 
 def initialize_routes(api):
     api.add_resource(AllUsersApi, '/api/v1/users')
@@ -18,7 +19,8 @@ def initialize_routes(api):
     api.add_resource(InstrumentUserApi, '/api/v1/user/inst')
     api.add_resource(TrackApi, '/api/v1/user/trk')
     api.add_resource(TrackUserApi, '/api/v1/user/user_trk')
-
+    api.add_resource(TrackLikeApi, '/api/v1/user/user_like_trk')
+    api.add_resource(TrackUnLikeApi, '/api/v1/user/user_unlike_trk')
     api.add_resource(CounterApi, '/api/v1/counter')
     api.add_resource(PlaylistApi, '/api/v1/play')
     api.add_resource(PlaylistPostApi, '/api/v1/play_p')
