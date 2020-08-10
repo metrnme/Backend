@@ -1,5 +1,5 @@
 from flask import Response, request, jsonify
-from database.models import Track, Users, Counter
+from database.models import Track, Users, Counter, Playlist
 from flask_restful import Resource
 from database.db import connect_db
 import json
@@ -61,13 +61,40 @@ class TrackApi(Resource):
             data = []
             for track in Track.objects:
                 t = {"track_id": track.track_id,  "name": track.name,
-                     "username": track.username, "url": track.url, "image_url": track.image_url, "genre": track.genre, "inst_used": track.inst_used, "user_likes":track.user_likes,"likes": track.likes}
+                     "username": track.username, "url": track.url, "image_url": track.image_url, "genre": track.genre, "inst_used": track.inst_used, "user_likes": track.user_likes, "likes": track.likes}
                 data.append(t)
                 json_data = json.dumps(data, indent=2)
 
             resp = Response(json_data, status=200,
                             mimetype='application/json')
             return resp
+
+        except Exception as e:
+            print(e)
+            return {'status': 409, 'error_message': 'Failed!'}
+
+    # This delete functions for a musician who wants to delete a track
+    def delete(self):
+        try:
+            data = request.get_json(force=True)
+            trk = Track.objects.get(track_id=data['track_id'])
+            message = ""
+            if(trk.username == data['username']):
+                trk.delete()
+                # Delete the given tracks_id from all playlist
+                try:
+                    playlists = Playlist.objects.getAllPlaylist(
+                        data['username'])
+                    for p in playlists:
+                        if(data['track_id'] in p.track_list):
+                            p.track_list.remove(data['track_id'])
+                            p.save()
+                    message = "This track has been sucessfully deleted from metrne!"
+                except:
+                    message = "No playlist exists for this user"
+            else:
+                message = "This track does not belong to this Username"
+            return {'status': 201, 'message': message}
 
         except Exception as e:
             print(e)

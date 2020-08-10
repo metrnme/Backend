@@ -71,7 +71,6 @@ class Track(Document):
     image_url = StringField()
     username = StringField(required=True)
     likes = IntField(default=0)
-    objects = QuerySetManager()
     user_likes = ListField(StringField())
     inst_used = ListField(StringField(max_length=30))
     genre = ListField(StringField(max_length=30))
