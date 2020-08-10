@@ -61,7 +61,7 @@ class TrackApi(Resource):
             data = []
             for track in Track.objects:
                 t = {"track_id": track.track_id,  "name": track.name,
-                     "username": track.username, "url": track.url, "image_url": track.image_url, "genre": track.genre, "inst_used": track.inst_used, "likes": track.likes}
+                     "username": track.username, "url": track.url, "image_url": track.image_url, "genre": track.genre, "inst_used": track.inst_used, "user_likes":track.user_likes,"likes": track.likes}
                 data.append(t)
                 json_data = json.dumps(data, indent=2)
 
