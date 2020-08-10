@@ -11,9 +11,9 @@ class AllUsersApi(Resource):  # for USERS
             data = []
             for user in Users.objects:
                 # Add all of this like this below i'll brb
-                u = {"username": user.username,  "name": user.name,
-                     "age": user.age,"imgUrl":user.imgUrl, "gender": user.gender,  "followers": user.followers,
-                     "following": user.following, "isMusician": user.isMusician,"bio":user.bio, "inst": user.inst}
+                u = {"_id": {"$oid": "0"}, "username": user.username,  "name": user.name,
+                     "age": user.age, "imgUrl": user.imgUrl, "gender": user.gender,  "followers": user.followers,
+                     "following": user.following, "isMusician": user.isMusician, "bio": user.bio, "inst": user.inst}
                 data.append(u)
                 json_data = json.dumps(data, indent=2)
 
@@ -69,9 +69,8 @@ class UserDataApi(Resource):  # for USER
 
     def post(self):
         try:
-            data = request.form["username"]
-            print(data)
-            result = Users.objects.get(username=data)
+            data = request.get_json(force=True)
+            result = Users.objects.get(username=data['username'])
             json_data = result.to_json()
             resp = Response(json_data, status=200, mimetype='application/json')
             return resp
@@ -80,7 +79,6 @@ class UserDataApi(Resource):  # for USER
             resp = jsonify(
                 {'status': 404, 'error_message': 'The User Searched does not exist!'})
             return resp
-
 
 
 class CreateUserApi(Resource):  # for USER

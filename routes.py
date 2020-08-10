@@ -17,10 +17,12 @@ def initialize_routes(api):
     api.add_resource(CommentFetchApi, '/api/v1/t_comment')
     api.add_resource(InstrumentApi, '/api/v1/inst')
     api.add_resource(InstrumentUserApi, '/api/v1/user/inst')
+
     api.add_resource(TrackApi, '/api/v1/user/trk')
     api.add_resource(TrackUserApi, '/api/v1/user/user_trk')
     api.add_resource(TrackLikeApi, '/api/v1/user/user_like_trk')
     api.add_resource(TrackUnLikeApi, '/api/v1/user/user_unlike_trk')
+
     api.add_resource(CounterApi, '/api/v1/counter')
     api.add_resource(PlaylistApi, '/api/v1/play')
     api.add_resource(PlaylistPostApi, '/api/v1/play_p')
