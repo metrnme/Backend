@@ -183,7 +183,7 @@ class FollowApi(Resource):
             #             from_me.save()
             #     message = data["from"]+" started following "+data["to"]
 
-            return {"status": 200, "message": message}
+            # return {"status": 200, "message": message}
         except Exception as e:
             print(e)
             return {'status': 409, 'error_message': 'Failed!'}
