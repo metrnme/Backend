@@ -103,43 +103,85 @@ class UsertypeApi(Resource):
         return {'status': 201, 'message': 'User type has been updated!'}
 
 
+class UnfollowApi(Resource):
+    def put(self):
+        try:
+            data = request.get_json(force=True)
+            username = data['from']
+            user_to_unfollow = data['to']
+            u = Users.objects.get(username=username)
+            u2 = Users.objects.get(username=user_to_unfollow)
+            message = username+" does not have "+user_to_unfollow+" in its following"
+            if(user_to_unfollow in u.following):
+                if(len(u.following) == 1):
+                    u.following.append("default")
+                if(len(u2.followers) == 1):
+                    u2.followers.append("default")
+                u.following.remove(user_to_unfollow)
+                message = username+" has unfollowed "+user_to_unfollow
+                u2.followers.remove(username)
+            u.save()
+            u2.save()
+            return {"status": 200, "message": message}
+
+        except Exception as e:
+            print(e)
+            return {'status': 409, 'error_message': 'Failed!'}
+
+
 class FollowApi(Resource):
     def put(self):
         try:
             data = request.get_json(force=True)
-            to_u = Users.objects.get(username=data["to"])
-            from_me = Users.objects.get(username=data["from"])
-            message = data["from"]+" is already following "+data["to"]
-
-            if(len(to_u.followers) == 0) and (len(from_me.following) == 0):
-                message = self.addFollower(
-                    to_u, from_me, data["to"], data["from"])
-            elif(len(to_u.followers) > 0 and len(from_me.following) == 0):
-                for users in to_u.followers:
-                    if users != data["from"]:
-                        to_u.followers.append(data["from"])
-                from_me.following.append(data["to"])
-                from_me.save()
-                to_u.save()
-                message = data["from"]+" started following "+data["to"]
-            elif(len(to_u.followers) == 0 and len(from_me.following) > 0):
-                for users in from_me.following:
-                    if users != data["to"]:
-                        from_me.following.append(data["to"])
-                to_u.followers.append(data["from"])
-                from_me.save()
-                to_u.save()
-                message = data["from"]+" started following "+data["to"]
+            u = data["to"]
+            me = data["from"]
+            to_u = Users.objects.get(username=u)
+            from_me = Users.objects.get(username=me)
+            message = ""
+            if (me in to_u.followers):
+                message = me+" is already following "+u
             else:
-                for users in to_u.followers:
-                    if(users != data["from"]):
-                        to_u.followers.append(data["from"])
-                        to_u.save()
-                for users in from_me.following:
-                    if(users != data["to"]):
-                        from_me.following.append(data["to"])
-                        from_me.save()
-                message = data["from"]+" started following "+data["to"]
+                to_u.followers.append(me)
+                from_me.following.append(u)
+                message = me+" is now following "+u
+                to_u.save()
+                from_me.save()
+            return {"status": 200, "message": message}
+
+            #
+            # to_u = Users.objects.get(username=data["to"])
+            # from_me = Users.objects.get(username=data["from"])
+            # message = data["from"]+" is already following "+data["to"]
+
+            # if(len(to_u.followers) == 0) and (len(from_me.following) == 0):
+            #     message = self.addFollower(
+            #         to_u, from_me, data["to"], data["from"])
+            # elif(len(to_u.followers) > 0 and len(from_me.following) == 0):
+            #     for users in to_u.followers:
+            #         if users != data["from"]:
+            #             to_u.followers.append(data["from"])
+            #     from_me.following.append(data["to"])
+            #     from_me.save()
+            #     to_u.save()
+            #     message = data["from"]+" started following "+data["to"]
+            # elif(len(to_u.followers) == 0 and len(from_me.following) > 0):
+            #     for users in from_me.following:
+            #         if users != data["to"]:
+            #             from_me.following.append(data["to"])
+            #     to_u.followers.append(data["from"])
+            #     from_me.save()
+            #     to_u.save()
+            #     message = data["from"]+" started following "+data["to"]
+            # else:
+            #     for users in to_u.followers:
+            #         if(users != data["from"]):
+            #             to_u.followers.append(data["from"])
+            #             to_u.save()
+            #     for users in from_me.following:
+            #         if(users != data["to"]):
+            #             from_me.following.append(data["to"])
+            #             from_me.save()
+            #     message = data["from"]+" started following "+data["to"]
 
             return {"status": 200, "message": message}
         except Exception as e:
