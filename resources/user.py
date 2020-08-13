@@ -85,13 +85,24 @@ class CreateUserApi(Resource):  # for USER
     def post(self):
         try:
             data = request.get_json(force=True)
-            post = Users(username=data['username'])
-            post.save()
-            return {'status': 201, 'message': 'User has been sucessfully created!'}
+            allusers = Users.objects
+            b = True
+            status = 0
+            message = "User already exists!"
+            for i in allusers:
+                if(i.username == data['username']):
+                    b = False
+            if(b):
+                post = Users(username=data['username'])
+                message = "User has been sucessfully created!"
+                status = 1
+                post.save()
+
+            return {'status': status, 'message': message}
 
         except Exception as e:
             print(e)
-            return {'status': 300, 'message': 'Username already exists!, please try coming up with a different username!'}
+            return {'status': 300, 'message': "error"}
 
 
 class UsertypeApi(Resource):
